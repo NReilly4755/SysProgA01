@@ -8,6 +8,8 @@
 */
 
 #include "nick.h"
+#include "josiah.h"
+
 
 int main(void) {
     const char *fifo = "/tmp/travel_fifo";
@@ -21,4 +23,8 @@ int main(void) {
 
     // Send a message using LogEvent
     LogEvent(fd, "Server started?\n");
+    
+    mainProgram();
+
+    return 0;
 }
