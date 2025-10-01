@@ -29,7 +29,7 @@ int mainProgram(void) {
         isAddress(client.address);
         printf(" address: %s\n",client.address);
         
-        if (AddClient(&party, &client) == 0){
+        if (AddClient(&party, &client) == kSuccess){
             printf("Client added to party: %s %s\n", client.firstName, client.lastName);
         }else {
             printf("Failed to add client (party full?)\n");
@@ -37,7 +37,7 @@ int mainProgram(void) {
         break;
     }
     case kMenuOptionTwo : {
-        if (AddDestination(&party) != 0) {
+        if (AddDestination(&party) != kSuccess) {
         printf("Could not set destination, make sure you have at least one client in the party!!\n");
     }
     break;
@@ -92,12 +92,12 @@ void isAString(char* str) {
         run = false;
 
         size_t len = strlen(buffer);
-        if (len == 0) {
+        if (len == kEmpty) {
             printf("Input cannot be empty, enter letters only: ");
             run = true;
             continue;
         }
-        if (len > 100) {
+        if (len > kMaxLengthName) {
             printf("Input too long, enter a shorter name: ");
             run = true;
             continue;
@@ -136,7 +136,7 @@ int isANumber()
         buffer[strcspn(buffer, "\n")] = '\0';
         if (sscanf(buffer, "%d", &value) == 1)
         {
-            if (value > 999) {
+            if (value > kMaxAge || value <  kNegativeAge  ) {
                 printf("Age invalid, please enter a valid age: ");
                 continue;
             }
@@ -166,12 +166,12 @@ void isAddress(char* str) {
         run = false;
 
         size_t len = strlen(buffer);
-        if (len == 0) {
+        if (len == kEmpty) {
             printf("Input cannot be empty! Please enter a valid address: ");
             run = true;
             continue;
         }
-        if (len > 150) {
+        if (len > kMaxAddressLength) {
             printf("Address too long (max 150 chars), please enter a shorter address: ");
             run = true;
             continue;

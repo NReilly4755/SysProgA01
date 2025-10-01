@@ -11,6 +11,12 @@
 #define kMenuOptionTwo 2
 #define kMenuOptionThree 3
 #define kSizeOfString 100
+#define kSuccess 0
+#define kEmpty 0
+#define kNegativeAge 0
+#define kMaxLengthName 100
+#define kMaxAge 999
+#define kMaxAddressLength 150
 
 typedef struct {
 	char firstName[kSizeOfString];
