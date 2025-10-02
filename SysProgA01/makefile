@@ -1,13 +1,16 @@
+# Default target builds both
+all: bin/serverProgram bin/clientProgram
+
 # Server executable
-bin/serverProgram : obj/server.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o
+bin/serverProgram : dirs obj/server.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o
 	gcc obj/server.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o -o bin/serverProgram
 
 # Client executable
-bin/clientProgram : obj/client.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o
+bin/clientProgram : dirs obj/client.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o
 	gcc obj/client.o obj/nick.o obj/josiah.o obj/bibi.o obj/rodrigo.o -o bin/clientProgram
 
 # Object files
-obj/client.o : src/client.c
+obj/client.o : src/client.c inc/nick.h inc/josiah.h inc/bibi.h inc/rodrigo.h
 	gcc -c src/client.c -I inc -o obj/client.o
 
 obj/server.o : src/server.c
@@ -25,11 +28,12 @@ obj/bibi.o : src/bibi.c inc/bibi.h
 obj/rodrigo.o : src/rodrigo.c inc/rodrigo.h
 	gcc -c src/rodrigo.c -I inc -o obj/rodrigo.o
 
-# Default target builds both
-all: bin/serverProgram bin/clientProgram
 
+# ensure build directories exist
+dirs:
+	mkdir -p bin obj
+	
 # Cleanup
 clean:
 	rm -f bin/*
 	rm -f obj/*
-

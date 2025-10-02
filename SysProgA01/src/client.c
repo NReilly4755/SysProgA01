@@ -9,6 +9,9 @@
 
 #include "nick.h"
 #include "josiah.h"
+#include "bibi.h"
+#include "rodrigo.h"
+
 
 
 int main(void) {
@@ -24,7 +27,9 @@ int main(void) {
     // Send a message using LogEvent
     LogEvent(fd, "Server started?\n");
     
-    mainProgram();
+    runClientFlow(fd);
 
+    close(fd);
+    
     return 0;
 }
