@@ -7,9 +7,10 @@
 * REFERENCING   : Deitel, P., & Deitel, H. (2016). How to Program in C and C++ (8th ed.). Deitel & Associates Inc. 
 */
 
+#include "bibi.h"
 #include "nick.h"
 #include "josiah.h"
-
+#include "rodrigo.h"
 
 int main(void) {
     const char *fifo = "/tmp/travel_fifo";
@@ -24,7 +25,8 @@ int main(void) {
     // Send a message using LogEvent
     LogEvent(fd, "Server started?\n");
     
-    mainProgram();
+    runClientFlow(fd);
 
+    close(fd);
     return 0;
 }

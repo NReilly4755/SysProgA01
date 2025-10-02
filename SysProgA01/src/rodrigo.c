@@ -29,30 +29,12 @@ int AddClient(Party *party, Client *client) {
 }
 
 // FUNCTION : AddDestination
-// DESCRIPTION : Choose a client from Party and assign a destination
+// DESCRIPTION : Ask user to enter the destination for the party
 // PARAMETERS : Party *party - pointer to Party struct
 // RETURNS: int (0 if success, -1 if error)
 int AddDestination(Party *party) {
-    if (party->client_count == 0) {
-        printf("No clients available, please add a client first, then add his destination\n");
-        return -1;
-    }
-
-    printf("Clients list:\n");
-    for (int i = 0; i < party->client_count; i++) {
-        printf("%d) %s %s\n", i + 1, party->clients[i].firstName, party->clients[i].lastName);
-    }
-
-    printf("Choose client number to set destination for: ");
-    int idx = isANumber();
-
-    if (idx < 1 || idx > party->client_count) {
-        printf("Invalid selection...\n");
-        return -1;
-    }
-
     char destination_buffer[MAX_DESTINATION_LEN];
-    printf("Enter destination for %s %s: ", party->clients[idx - 1].firstName, party->clients[idx - 1].lastName);
+    printf("Enter destination for this party: ");
 
     if (fgets(destination_buffer, sizeof(destination_buffer), stdin) == NULL) {
         printf("Input error...\n");
@@ -72,10 +54,8 @@ int AddDestination(Party *party) {
     strncpy(party->destination, destination_buffer, MAX_DESTINATION_LEN);
     party->destination[MAX_DESTINATION_LEN - 1] = '\0';
 
-    strncpy(party->clients[idx - 1].address, destination_buffer, kSizeOfString);
-    party->clients[idx - 1].address[kSizeOfString - 1] = '\0';
-
-    printf("Destination set for %s %s: %s\n", party->clients[idx - 1].firstName, party->clients[idx - 1].lastName, party->destination);
+    printf("Destination set for this party: %s\n", party->destination);
 
     return 0;
 }
+

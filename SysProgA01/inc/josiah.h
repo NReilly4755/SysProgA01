@@ -20,8 +20,6 @@ typedef struct {
 }Client;
 
 //Function prototypes
-int mainProgram(void);
-void displayMenu();
 int isANumber();
 void isAString(char* str);
 void isAddress(char* str);

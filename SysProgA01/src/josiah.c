@@ -1,75 +1,10 @@
 #include "josiah.h"
 #include "rodrigo.h"
+#include "bibi.h"
+
 
 #pragma warning(disable:4996)
 
-int mainProgram(void) {
-    bool run = true;
-    int choice = 0;
-    Party party;
-    InitParty(&party);
-
-    while (run) {
-    displayMenu();
-    choice = isANumber();
-    Client client = { 0 };
-    switch (choice) {
-    case kMenuOptionOne: {
-        printf("Enter first name: ");
-        isAString(client.firstName);
-
-        printf("First name is: %s\n", client.firstName);
-        printf("Enter last name: ");
-        isAString(client.lastName);
-        
-        printf("Enter age: ");
-        client.age = isANumber();
-        
-        printf("Enter address: ");
-        isAddress(client.address);
-        printf(" address: %s\n",client.address);
-        
-        if (AddClient(&party, &client) == 0){
-            printf("Client added to party: %s %s\n", client.firstName, client.lastName);
-        }else {
-            printf("Failed to add client (party full?)\n");
-            }
-        break;
-    }
-    case kMenuOptionTwo : {
-        if (AddDestination(&party) != 0) {
-        printf("Could not set destination, make sure you have at least one client in the party!!\n");
-    }
-    break;
-    }
-    case kMenuOptionThree: {
-        run = false;
-        break;
-    }
-    default:
-        printf("Debugging: Error input shouldn't get here\n");
-        break;
-    }
-
-    }
-    return 0;
-}
-
-// FUNCTION : displayMenu
-// DESCRIPTION :
-// This function prints the menu to the user
-// PARAMETERS :
-// NONE
-// RETURNS: 
-// NONE
-void displayMenu() {
-    printf("***************\n");
-    printf("1. Enter a client\n"); //If user types "party", that a list of struct of clients and this list ends when the first word of the input is "end"
-    printf("2. Enter a destination\n");
-    printf("3. Exit\n");
-    printf("****************\n");
-    printf("Enter your choice: ");
-}
 
 // FUNCTION : isAString
 // DESCRIPTION :
