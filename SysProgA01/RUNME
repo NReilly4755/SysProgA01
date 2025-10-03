@@ -4,8 +4,8 @@
 make all || { echo "Build failed"; exit 1; }
 
 # Executable names
-CLIENT_EXE="bin/serverProgram"
-SERVER_EXE="bin/clientProgram"
+CLIENT_EXE="bin/clientProgram"
+SERVER_EXE="bin/serverProgram"
 
 # Open new terminals side by side (gnome-terminal example)
 gnome-terminal --geometry=80x24+0+0 -- bash -c "./$SERVER_EXE; exec bash"

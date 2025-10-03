@@ -6,7 +6,7 @@
 * DESCRIPTION   : Main server file. Sets up a FIFO for IPC and prints messages from clients.
 */
 
-#include "nick.h"
+
 #include <sys/stat.h>
 #include <errno.h>
 #include <stdio.h>
