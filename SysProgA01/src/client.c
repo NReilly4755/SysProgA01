@@ -69,7 +69,8 @@ void isAString(char* str, int fd) {
 
         bool valid = true;
         for (size_t i = 0; i < len; i++) {
-            if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))) {
+            if (!((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') ||
+                   str[i] == ' ')) {
                 valid = false;
                 break;
             }
@@ -396,9 +397,16 @@ void runClientFlow(int fd) {
             }
 
             
+           
             if (strcmp(temp, "end") == 0) {
-                printf("Party finished. Total clients: %d. Destination: %s\n",
-                       party.client_count, party.destination);
+                snprintf(buffer, sizeof(buffer),
+                         "Party finished. Total clients: %d. Destination: %s\n",
+                         party.client_count, party.destination);
+
+                printf("%s", buffer);
+
+                write(fd, buffer, strlen(buffer));
+
                 write(fd, "end\n", 4);
                 break;
             }
