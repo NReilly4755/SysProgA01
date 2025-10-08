@@ -1,11 +1,11 @@
 /*
-* FILE          : server.c
-* PROJECT       : System Programming Assignment 1
-* PROGRAMMER    : Nicholas Reilly
-* FIRST VERSION : Sept 30 2025
-* DESCRIPTION   : Main server file. Sets up a FIFO for IPC and prints messages from clients.
-*/
-
+ * FILE          : server.c
+ * PROJECT       : System Programming Assignment 1
+ * PROGRAMMER    : Nicholas Reilly
+ * FIRST VERSION : Sept 30 2025
+ * DESCRIPTION   : Main server file. Sets up a FIFO for IPC, prints messages
+ *                 from clients, and responds to signals for graceful shutdown.
+ */
 
 #include <sys/stat.h>
 #include <errno.h>
@@ -13,12 +13,34 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <signal.h>
+
+// Global FIFO path so the handler can clean it up
+const char *fifo = "/tmp/travel_fifo";
+
+// Signal handler
+void handle_signal(int sig)
+{
+    if (sig == SIGINT || sig == SIGTERM || sig == SIGUSR1)
+    {
+        printf("\n[Server] Caught signal %d, shutting down...\n", sig);
+        fflush(stdout);
+        unlink(fifo); // remove the FIFO file
+        exit(0);
+    }
+}
 
 // Function prototype
 void InitializeServer(void);
 
 // Main function
-int main(void) {
+int main(void)
+{
+    // Install signal handlers
+    signal(SIGINT, handle_signal);  /
+    signal(SIGTERM, handle_signal); 
+    signal(SIGUSR1, handle_signal); 
+
     InitializeServer();
     return 0;
 }
@@ -28,14 +50,13 @@ int main(void) {
 //              Listens for messages from clients and prints them to the console.
 // PARAMETERS : None
 // RETURNS    : void
-void InitializeServer(void) {
-
-    //Define the path for where it will live.
-    const char *fifo = "/tmp/travel_fifo";
-    
-    // Create a pipe if one does not already exist.
-    if (mkfifo(fifo, 0666) == -1) {
-        if (errno != EEXIST) {
+void InitializeServer(void)
+{
+    // reate a pipe if one does not already exist.
+    if (mkfifo(fifo, 0666) == -1)
+    {
+        if (errno != EEXIST)
+        {
             perror("mkfifo failed");
             exit(EXIT_FAILURE);
         }
@@ -47,23 +68,39 @@ void InitializeServer(void) {
 
     //Open FIFO for reading (will block until a writer connects)
     int fd = open(fifo, O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1)
+    {
         perror("open fifo");
         exit(EXIT_FAILURE);
     }
 
-    printf("Server is running. Waiting for client messages...\n");
+    printf("[Server] PID: %d\n", getpid());
+    printf("[Server] Running. Waiting for client messages...\n");
     fflush(stdout);
 
+    //Write PID to a file so clients can find it
+    FILE *pidfile = fopen("/tmp/server.pid", "w");
+    if (pidfile)
+    {
+        fprintf(pidfile, "%d\n", getpid());
+        fclose(pidfile);
+    }
+    else
+    {
+        perror("fopen /tmp/server.pid");
+    }
+
     //Read messages continuously
-    while ((n = read(fd, buffer, sizeof(buffer) - 1)) > 0) {
+    while ((n = read(fd, buffer, sizeof(buffer) - 1)) > 0)
+    {
         buffer[n] = '\0';
-        printf("Server received: %s\n", buffer);
-        fflush(stdout);    
+        printf("[Server] Received: %s\n", buffer);
+        fflush(stdout);
     }
 
     //Handle error for a bad message.
-    if (n == -1) {
+    if (n == -1)
+    {
         perror("read failed");
     }
 }

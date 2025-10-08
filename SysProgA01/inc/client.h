@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <sys/select.h>
 #include <time.h>
+#include <signal.h>
 
 //Definitions
 #define MAX_CLIENTS 10

@@ -1,20 +1,24 @@
+# Compiler and flags
+CC      ?= cc
+CFLAGS  = -Wall -Wextra -I inc
+
 # Default target builds both
 all: bin/serverProgram bin/clientProgram
 
 # Server executable
 bin/serverProgram: dirs obj/server.o
-	gcc obj/server.o -o bin/serverProgram
+	$(CC) obj/server.o -o bin/serverProgram
 
 # Client executable
 bin/clientProgram: dirs obj/client.o
-	gcc obj/client.o -o bin/clientProgram
+	$(CC) obj/client.o -o bin/clientProgram
 
 # Object files
 obj/server.o: src/server.c
-	gcc -c src/server.c -I inc -o obj/server.o
+	$(CC) $(CFLAGS) -c src/server.c -o obj/server.o
 
 obj/client.o: src/client.c inc/client.h
-	gcc -c src/client.c -I inc -o obj/client.o
+	$(CC) $(CFLAGS) -c src/client.c -o obj/client.o
 
 # Ensure build directories exist
 dirs:
@@ -23,4 +27,3 @@ dirs:
 # Cleanup
 clean:
 	rm -f bin/* obj/*
-
